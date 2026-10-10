@@ -1,4 +1,4 @@
-{ user, ... }:
+  { user, ... }:
 
 {
   # Determinate already manages the Nix daemon, so nix-darwin shouldn't.
@@ -14,20 +14,24 @@
   system.stateVersion = 6;
   system.defaults = {
     NSGlobalDomain = {
-      AppleInterfaceStyle = "Dark";
-      KeyRepeat = 2;          # fast key repeat
-      InitialKeyRepeat = 15;  # short delay before repeat
-      _HIHideMenuBar = true;  # auto-hide the menu bar
-      AppleShowAllExtensions = true;
+      AppleInterfaceStyle = "Dark";          # dark mode
+      AppleShowAllExtensions = true;         # file extensions
+      InitialKeyRepeat = 15;                 # short delay before repeat
+      KeyRepeat = 2;                         # fast key repeat
     };
-    dock.autohide = true;
+
+    dock.tilesize = 40;                    # dock icon size
+    dock.show-recents = false;             # recent/suggestions in dock
     finder.FXPreferredViewStyle = "Nlsv";  # list view by default
-    finder.CreateDesktop = false;          # clean desktop
+    finder.ShowPathbar = true;             # path bar at bottom of windows
+    finder.NewWindowTarget = "Home";       # new windows open to Home
     trackpad.Clicking = true;              # tap to click
+    menuExtraClock.ShowSeconds = true;     # show seconds in menu bar clock
   };
   nix-homebrew = {
     enable = true;
     inherit user;
+    autoMigrate = true;  # take over a pre-existing /opt/homebrew install
   };
   homebrew = {
     enable = true;

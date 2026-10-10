@@ -62,6 +62,8 @@ in
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/herdr";
   home.file.".claude/settings.json".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.claude/settings.json";
+  home.file.".claude/statusline-command.sh".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.claude/statusline-command.sh";
 
   # Keep Pi's credential and runtime state local by linking only authored files and directories.
   home.file.".pi/agent/themes".source =
