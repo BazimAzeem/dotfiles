@@ -45,6 +45,8 @@
       "maccy"
       "wezterm"
       "claude-code"
+      "google-chrome"
+      "whatsapp"
     ];
   };
 }
