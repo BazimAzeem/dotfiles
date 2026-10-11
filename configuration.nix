@@ -42,6 +42,7 @@
       "herdr"
     ];
     casks = [
+      "maccy"
       "wezterm"
       "claude-code"
     ];
