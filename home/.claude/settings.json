@@ -1,7 +1,13 @@
 {
-  "theme": "auto",
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
-  }
+  },
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "low"
+    }
+  },
+  "theme": "auto",
+  "model": "opus"
 }

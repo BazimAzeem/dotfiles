@@ -44,9 +44,10 @@
     casks = [
       "maccy"
       "wezterm"
+      "raycast"
+      "whatsapp"
       "claude-code"
       "google-chrome"
-      "whatsapp"
       "opensuperwhisper"
     ];
   };
