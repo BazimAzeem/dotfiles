@@ -48,6 +48,7 @@
       "whatsapp"
       "claude-code"
       "google-chrome"
+      "google-drive"
       "opensuperwhisper"
     ];
   };
