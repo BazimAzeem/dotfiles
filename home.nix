@@ -26,6 +26,13 @@ in
     enable = true;
     autosuggestion.enable = true;      # ghost text from history
     syntaxHighlighting.enable = true;  # commands turn green when valid
+    # Emacs keys, not vi mode (which zsh picks because EDITOR=nvim). WezTerm maps
+    # macOS text navigation (Option/Cmd + arrows/Delete) onto these readline keys.
+    defaultKeymap = "emacs";
+    # Ctrl+U (Cmd+Delete) deletes to line start like macOS, not the whole line.
+    initContent = ''
+      bindkey '^U' backward-kill-line
+    '';
   };
 
   programs.starship = {

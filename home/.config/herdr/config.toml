@@ -2,6 +2,8 @@ onboarding = false
 [ui]
 # Agents panel order: explicit choice of "spaces" (grouped by space, the default) over "priority".
 agent_panel_sort = "spaces"
+# Keep mouse selection but do not auto-copy; Cmd+C (forwarded by WezTerm) or Ctrl+C copies it.
+copy_on_select = false
 
 [theme]
 name = "vesper"
