@@ -5,6 +5,10 @@ agent_panel_sort = "spaces"
 # Keep mouse selection but do not auto-copy; Cmd+C (forwarded by WezTerm) or Ctrl+C copies it.
 copy_on_select = false
 
+[ui.toast]
+# Ask WezTerm to show a macOS notification when a background agent finishes or needs input.
+delivery = "terminal"
+
 [theme]
 name = "vesper"
 auto_switch = false
