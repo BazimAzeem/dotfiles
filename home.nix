@@ -1,12 +1,13 @@
-{ config, pkgs, user, ... }:
+{ config, lib, pkgs, user, ... }:
 
 let
   dotfiles = "${config.home.homeDirectory}/.dotfiles";
+  inherit (pkgs.stdenv) isDarwin isLinux;
 in
 
 {
   home.username = user;
-  home.homeDirectory = "/Users/${user}";
+  home.homeDirectory = if isDarwin then "/Users/${user}" else "/home/${user}";
   home.stateVersion = "24.11";
   home.packages = with pkgs; [
     # cli i use constantly
@@ -16,10 +17,11 @@ in
     jq        # json on the command line
     lazygit
     neovim
-    # the font everything renders in
+  ] ++ lib.optionals isDarwin [
+    # the font everything renders in (Linux machines are used over SSH from the Mac)
     nerd-fonts.hack
   ];
-  fonts.fontconfig.enable = true;
+  fonts.fontconfig.enable = isDarwin;
   home.sessionVariables.EDITOR = "nvim";
 
   programs.zsh = {
@@ -32,8 +34,20 @@ in
     # Ctrl+U (Cmd+Delete) deletes to line start like macOS, not the whole line.
     initContent = ''
       bindkey '^U' backward-kill-line
+
+      # Machine-local env and secrets; never tracked in this public repo.
+      [ -f ~/.zshrc.local ] && source ~/.zshrc.local
     '';
   };
+
+  # Linux machines run standalone Home Manager on a non-NixOS distro.
+  targets.genericLinux = lib.mkIf isLinux {
+    enable = true;
+    gpu.enable = false;  # headless VM, no GPU drivers to wire up
+  };
+  programs.home-manager.enable = isLinux;  # the home-manager command rebuild.sh uses
+  home.sessionPath = lib.optionals isLinux [ "$HOME/.local/bin" ];  # native claude and herdr installs
+  programs.direnv.enable = isLinux;
 
   programs.starship = {
     enable = true;
@@ -48,8 +62,10 @@ in
   };
 
   # Edit-in-place: the real file stays in my repo, ~/.config just points at it.
-  home.file.".config/wezterm".source =
-    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/wezterm";
+  # WezTerm runs on the Mac; Linux machines are reached through it over SSH.
+  home.file.".config/wezterm" = lib.mkIf isDarwin {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/wezterm";
+  };
   home.file.".config/nvim".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/nvim";
   home.file.".config/herdr".source =

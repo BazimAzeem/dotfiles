@@ -12,13 +12,20 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
+    # Linux machines (standalone Home Manager) use the NixOS release channel,
+    # which is built and cached for x86_64-linux.
+    nixpkgs-linux.url = "github:NixOS/nixpkgs/nixos-26.05";
   };
 
-  outputs = inputs@{ self, nix-darwin, nix-homebrew, home-manager, nixpkgs }:
+  outputs = inputs@{ self, nix-darwin, nix-homebrew, home-manager, nixpkgs, nixpkgs-linux }:
     let
       # The one username line to change if this isn't your machine.
       # bootstrap.sh offers to rewrite this for you if your macOS username differs.
       user = "bazim";
+      # The username on Linux machines, which only get home.nix (no nix-darwin).
+      # bootstrap.sh offers to rewrite this for you if your Linux username differs.
+      linuxUser = "bazeem3_whova_com";
     in
     {
       darwinConfigurations."mac" = nix-darwin.lib.darwinSystem {
@@ -34,6 +41,15 @@
             home-manager.users.${user} = import ./home.nix;
           }
         ];
+      };
+
+      homeConfigurations."linux" = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs-linux {
+          system = "x86_64-linux";
+          config.allowUnfree = true;
+        };
+        extraSpecialArgs = { user = linuxUser; };
+        modules = [ ./home.nix ];
       };
     };
 }
