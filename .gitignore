@@ -6,6 +6,9 @@ home/.config/herdr/*.sock.*
 home/.config/herdr/session-snapshots/
 home/.config/herdr/release-notes.json
 home/.config/herdr/.plugins.lock
+# plugin registry holds machine-specific absolute paths; plugin configs are machine-local
+home/.config/herdr/plugins.json
+home/.config/herdr/plugins/
 
 # macOS + nix build noise
 .DS_Store
